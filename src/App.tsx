@@ -75,14 +75,6 @@ const App: React.FC = () => {
     );
   }
 
-  const renderPage = () => {
-    switch (page) {
-      case "home":     return <MonthView />;
-      case "tags":     return <TagsPage />;
-      case "settings": return <SettingsPage />;
-    }
-  };
-
   const isDark = appTheme === "dark";
 
   return (
@@ -129,7 +121,13 @@ const App: React.FC = () => {
 
         {/* 右侧内容区 */}
         <main className={styles.content}>
-          {renderPage()}
+          <section
+            className={`${styles.pagePanel} ${page === "home" ? styles.pagePanelVisible : styles.pagePanelHidden}`}
+          >
+            <MonthView />
+          </section>
+          {page === "tags" && <TagsPage />}
+          {page === "settings" && <SettingsPage />}
         </main>
       </div>
     </ConfigProvider>

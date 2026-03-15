@@ -123,7 +123,7 @@ const SettingsPage: React.FC = () => {
           control={<Switch defaultChecked />}
         />
         <SettingRow
-          label="数据目录"
+          label="数据保存目录"
           desc={dataDir}
           control={
             <Space size={8}>

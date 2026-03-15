@@ -104,3 +104,17 @@
   display: flex;
   flex-direction: column;
 }
+
+.pagePanel {
+  flex: 1;
+  min-height: 0;
+}
+
+.pagePanelVisible {
+  display: flex;
+  flex-direction: column;
+}
+
+.pagePanelHidden {
+  display: none;
+}

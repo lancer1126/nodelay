@@ -16,6 +16,7 @@ import {
   RightOutlined,
   PlusOutlined,
   DeleteOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 import { useEditor, EditorContent } from "@tiptap/react";
@@ -65,6 +66,7 @@ const EntryPopoverContent: React.FC<EntryPopoverProps> = ({
   const { tags, topics } = useAppStore();
   const { addTopic } = useTopics();
   const { addTag } = useTags();
+  const [isEditing, setIsEditing] = useState(!entry);
   const [selectedTopicId, setSelectedTopicId] = useState<number | null>(
     entry?.topic?.id ?? entry?.topic_id ?? null
   );
@@ -87,6 +89,7 @@ const EntryPopoverContent: React.FC<EntryPopoverProps> = ({
   const editor = useEditor({
     extensions: [StarterKit, Underline],
     content: entry?.content ?? "",
+    editable: !entry,
     onCreate: ({ editor }) => {
       setCanSave(editor.getText().trim().length > 0);
     },
@@ -94,6 +97,10 @@ const EntryPopoverContent: React.FC<EntryPopoverProps> = ({
       setCanSave(editor.getText().trim().length > 0);
     },
   });
+
+  useEffect(() => {
+    editor?.setEditable(isEditing);
+  }, [editor, isEditing]);
 
   const handleSave = async () => {
     const html = editor?.getHTML() ?? "";
@@ -158,95 +165,145 @@ const EntryPopoverContent: React.FC<EntryPopoverProps> = ({
 
   const selectedTopic = topics.find((t) => t.id === selectedTopicId) ?? null;
   const selectedTags = tags.filter((t) => selectedTagIds.includes(t.id));
+  const viewContentHtml = entry?.content?.trim()
+    ? entry.content
+    : "<p>（空记录）</p>";
 
   return (
     <div className={styles.popoverContent}>
-      <div className={styles.popoverMetaRow}>
-        <Button
-          size="small"
-          className={styles.metaPickerBtn}
-          onClick={() => {
-            setTempTopicId(selectedTopicId);
-            setTopicModalOpen(true);
-          }}
-        >
-          主题
-        </Button>
-        <Button
-          size="small"
-          className={styles.metaPickerBtn}
-          onClick={() => {
-            setTempTagIds(selectedTagIds);
-            setTagModalOpen(true);
-          }}
-        >
-          标签
-        </Button>
-      </div>
-      <div className={styles.selectedMetaRow}>
-        {selectedTopic ? (
-          <Tag
-            color={selectedTopic.color}
-            closable
-            onClose={(e) => {
-              e.preventDefault();
-              setSelectedTopicId(null);
-            }}
-            style={{ margin: 0 }}
-          >
-            主题: {selectedTopic.name}
-          </Tag>
-        ) : (
-          <span className={styles.metaHint}>未选择主题</span>
-        )}
-        {selectedTags.length > 0 ? (
-          <div className={styles.metaTagsWrap}>
-            {selectedTags.map((tag) => (
+      {!entry || isEditing ? (
+        <>
+          <div className={styles.popoverMetaRow}>
+            <Button
+              size="small"
+              className={styles.metaPickerBtn}
+              onClick={() => {
+                setTempTopicId(selectedTopicId);
+                setTopicModalOpen(true);
+              }}
+            >
+              主题
+            </Button>
+            <Button
+              size="small"
+              className={styles.metaPickerBtn}
+              onClick={() => {
+                setTempTagIds(selectedTagIds);
+                setTagModalOpen(true);
+              }}
+            >
+              标签
+            </Button>
+          </div>
+          <div className={styles.selectedMetaRow}>
+            {selectedTopic ? (
               <Tag
-                key={tag.id}
-                color={tag.color}
+                color={selectedTopic.color}
                 closable
                 onClose={(e) => {
                   e.preventDefault();
-                  setSelectedTagIds((prev) => prev.filter((id) => id !== tag.id));
+                  setSelectedTopicId(null);
                 }}
+                style={{ margin: 0 }}
               >
-                {tag.name}
+                主题: {selectedTopic.name}
               </Tag>
-            ))}
+            ) : (
+              <span className={styles.metaHint}>未选择主题</span>
+            )}
+            {selectedTags.length > 0 ? (
+              <div className={styles.metaTagsWrap}>
+                {selectedTags.map((tag) => (
+                  <Tag
+                    key={tag.id}
+                    color={tag.color}
+                    closable
+                    onClose={(e) => {
+                      e.preventDefault();
+                      setSelectedTagIds((prev) => prev.filter((id) => id !== tag.id));
+                    }}
+                  >
+                    {tag.name}
+                  </Tag>
+                ))}
+              </div>
+            ) : (
+              <span className={styles.metaHint}>未选择标签</span>
+            )}
           </div>
-        ) : (
-          <span className={styles.metaHint}>未选择标签</span>
-        )}
-      </div>
-      <div className={styles.popoverEditor} onClick={() => editor?.commands.focus("end")}>
-        <EditorContent editor={editor} className={styles.miniEditor} />
-      </div>
-      <div className={styles.popoverActions}>
-        {onDelete && (
-          <Popconfirm
-            title="确认删除此事项？"
-            onConfirm={onDelete}
-            okText="删除"
-            cancelText="取消"
+          <div
+            className={styles.popoverEditor}
+            onClick={() => editor?.commands.focus("end")}
           >
-            <Button size="small" danger icon={<DeleteOutlined />} />
-          </Popconfirm>
-        )}
-        <div style={{ flex: 1 }} />
-        <Button size="small" onClick={onClose}>
-          取消
-        </Button>
-        <Button
-          size="small"
-          type="primary"
-          loading={saving}
-          onClick={handleSave}
-          disabled={!canSave}
-        >
-          保存
-        </Button>
-      </div>
+            <EditorContent editor={editor} className={styles.miniEditor} />
+          </div>
+          <div className={styles.popoverActions}>
+            {onDelete && (
+              <Popconfirm
+                title="确认删除此事项？"
+                onConfirm={onDelete}
+                okText="删除"
+                cancelText="取消"
+              >
+                <Button size="small" danger icon={<DeleteOutlined />} />
+              </Popconfirm>
+            )}
+            <div style={{ flex: 1 }} />
+            <Button size="small" onClick={onClose}>
+              取消
+            </Button>
+            <Button
+              size="small"
+              type="primary"
+              loading={saving}
+              onClick={handleSave}
+              disabled={!canSave}
+            >
+              保存
+            </Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={styles.viewerHeader}>
+            <div className={styles.viewerTitle}>事项详情</div>
+            <Button
+              size="small"
+              type="text"
+              icon={<EditOutlined />}
+              onClick={() => setIsEditing(true)}
+            >
+              编辑
+            </Button>
+          </div>
+          <div className={styles.selectedMetaRow}>
+            {selectedTopic ? (
+              <Tag color={selectedTopic.color} style={{ margin: 0 }}>
+                主题: {selectedTopic.name}
+              </Tag>
+            ) : (
+              <span className={styles.metaHint}>未选择主题</span>
+            )}
+            {selectedTags.length > 0 ? (
+              <div className={styles.metaTagsWrap}>
+                {selectedTags.map((tag) => (
+                  <Tag key={tag.id} color={tag.color}>
+                    {tag.name}
+                  </Tag>
+                ))}
+              </div>
+            ) : (
+              <span className={styles.metaHint}>未选择标签</span>
+            )}
+          </div>
+          <div className={`${styles.popoverEditor} ${styles.viewerEditor}`}>
+            <div
+              className={styles.viewerRichText}
+              dangerouslySetInnerHTML={{ __html: viewContentHtml }}
+            />
+          </div>
+        </>
+      )}
 
       <Modal
         title="选择主题"
@@ -366,6 +423,7 @@ interface EntryChipProps {
 
 const EntryChip: React.FC<EntryChipProps> = ({ entry, onUpdated }) => {
   const [open, setOpen] = useState(false);
+  const [popoverSeed, setPopoverSeed] = useState(0);
   const { editEntry, removeEntry } = useEntries();
 
   const handleSave = async (
@@ -390,13 +448,17 @@ const EntryChip: React.FC<EntryChipProps> = ({ entry, onUpdated }) => {
   return (
     <Popover
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={(v) => {
+        setOpen(v);
+        if (v) setPopoverSeed((seed) => seed + 1);
+      }}
       trigger="click"
       placement="right"
       arrow={false}
       overlayClassName={styles.popoverOverlay}
       content={
         <EntryPopoverContent
+          key={`${entry.id}-${popoverSeed}`}
           entry={entry}
           date={entry.date}
           onSave={handleSave}
@@ -426,6 +488,8 @@ const MonthView: React.FC = () => {
   const [pickerOpen, setPickerOpen] = useState(false);
   const gridRef = useRef<HTMLDivElement | null>(null);
   const [maxVisiblePerDay, setMaxVisiblePerDay] = useState(3);
+  const [maxVisibleWithMorePerDay, setMaxVisibleWithMorePerDay] = useState(2);
+  const [morePopoverDate, setMorePopoverDate] = useState<string | null>(null);
 
   useEffect(() => {
     refreshMonth();
@@ -484,7 +548,6 @@ const MonthView: React.FC = () => {
   while (cells.length % 7 !== 0) cells.push(null);
 
   const weekRows = cells.length / 7;
-
   useEffect(() => {
     const el = gridRef.current;
     if (!el) return;
@@ -494,17 +557,39 @@ const MonthView: React.FC = () => {
       if (!gridHeight || weekRows <= 0) return;
 
       const cellHeight = gridHeight / weekRows;
-      const baselineMin = weekRows >= 6 ? 2 : 3;
-      // 预留日期头部、单元格 padding、"还有 x 条" 行高度，剩余空间给事项行。
-      const headerAndPadding = 38;
-      const moreChipHeight = 18;
-      const entryRowHeight = 22;
-      const usable = cellHeight - headerAndPadding;
-      const dynamicCount = Math.floor((usable - moreChipHeight) / entryRowHeight);
-      // 动态计算只做“向上扩展”，避免默认尺寸退化到仅 1 条。
-      const next = Math.min(8, Math.max(baselineMin, dynamicCount));
+      const sampleCell = el.querySelector<HTMLElement>(`.${styles.dayCell}`);
+      const sampleHeader = sampleCell?.querySelector<HTMLElement>(`.${styles.dayCellHeader}`);
+      const sampleEntry = sampleCell?.querySelector<HTMLElement>(`.${styles.entryChip}`);
+      const sampleMore = sampleCell?.querySelector<HTMLElement>(`.${styles.moreChip}`);
+      const sampleItems = sampleCell?.querySelector<HTMLElement>(`.${styles.entryItems}`);
 
-      setMaxVisiblePerDay(next);
+      const cellStyle = sampleCell ? window.getComputedStyle(sampleCell) : null;
+      const itemsStyle = sampleItems ? window.getComputedStyle(sampleItems) : null;
+      const paddingTop = cellStyle ? parseFloat(cellStyle.paddingTop || "0") : 0;
+      const paddingBottom = cellStyle ? parseFloat(cellStyle.paddingBottom || "0") : 0;
+      const verticalPadding = paddingTop + paddingBottom;
+      const headerHeight = sampleHeader?.getBoundingClientRect().height ?? 24;
+      const entryRowHeight = sampleEntry?.getBoundingClientRect().height ?? 20;
+      const moreChipHeight = sampleMore?.getBoundingClientRect().height ?? 18;
+      const rowGap = itemsStyle ? parseFloat(itemsStyle.rowGap || itemsStyle.gap || "2") : 2;
+
+      const usableForList = cellHeight - verticalPadding - headerHeight;
+      const dynamicCountWithoutMore = Math.floor(
+        (usableForList + rowGap) / (entryRowHeight + rowGap)
+      );
+      // 只有存在隐藏项时，才使用预留“显示全部”高度后的容量。
+      const availableForEntries = usableForList - moreChipHeight;
+      const dynamicCountWithMore = Math.floor(
+        (availableForEntries + rowGap) / (entryRowHeight + rowGap)
+      );
+      const nextWithoutMore = Math.min(8, Math.max(1, dynamicCountWithoutMore));
+      const nextWithMore = Math.min(
+        nextWithoutMore,
+        Math.max(1, dynamicCountWithMore)
+      );
+
+      setMaxVisiblePerDay(nextWithoutMore);
+      setMaxVisibleWithMorePerDay(nextWithMore);
     };
 
     recalcVisibleCount();
@@ -576,8 +661,13 @@ const MonthView: React.FC = () => {
           const isRightmostCol = idx % 7 === 6;
           const dayNum = parseInt(date.split("-")[2]);
           const dayEntries = entriesByDate.get(date) ?? [];
-          const visibleEntries = dayEntries.slice(0, maxVisiblePerDay);
-          const hiddenCount = dayEntries.length - maxVisiblePerDay;
+          const visibleLimit =
+            dayEntries.length > maxVisiblePerDay
+              ? maxVisibleWithMorePerDay
+              : maxVisiblePerDay;
+          const visibleEntries = dayEntries.slice(0, visibleLimit);
+          const hiddenEntries = dayEntries.slice(visibleLimit);
+          const hiddenCount = Math.max(0, dayEntries.length - visibleLimit);
 
           return (
             <div key={date} className={`${styles.dayCell} ${isToday ? styles.todayCell : ""}`}>
@@ -634,15 +724,51 @@ const MonthView: React.FC = () => {
 
               {/* 事项列表 */}
               <div className={styles.entryList}>
-                {visibleEntries.map((entry) => (
-                  <EntryChip
-                    key={entry.id}
-                    entry={entry}
-                    onUpdated={() => {}}
-                  />
-                ))}
+                <div className={styles.entryItems}>
+                  {visibleEntries.map((entry) => (
+                    <EntryChip
+                      key={entry.id}
+                      entry={entry}
+                      onUpdated={() => {}}
+                    />
+                  ))}
+                </div>
                 {hiddenCount > 0 && (
-                  <div className={styles.moreChip}>还有 {hiddenCount} 条</div>
+                  <Popover
+                    open={morePopoverDate === date}
+                    onOpenChange={(v) => {
+                      if (!v) setMorePopoverDate(null);
+                    }}
+                    trigger="click"
+                    placement={isRightmostCol ? "leftTop" : "rightTop"}
+                    arrow={false}
+                    overlayClassName={styles.popoverOverlay}
+                    content={
+                      <div className={styles.morePopoverList}>
+                        {hiddenEntries.map((entry) => (
+                          <EntryChip
+                            key={entry.id}
+                            entry={entry}
+                            onUpdated={refreshMonth}
+                          />
+                        ))}
+                        {hiddenEntries.length === 0 && (
+                          <div className={styles.morePopoverEmpty}>当天暂无事项</div>
+                        )}
+                      </div>
+                    }
+                  >
+                    <button
+                      type="button"
+                      className={styles.moreChip}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setMorePopoverDate((prev) => (prev === date ? null : date));
+                      }}
+                    >
+                      显示全部
+                    </button>
+                  </Popover>
                 )}
               </div>
             </div>

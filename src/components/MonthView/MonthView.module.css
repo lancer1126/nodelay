@@ -139,15 +139,23 @@
 .entryList {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  overflow: hidden;
   flex: 1;
   min-height: 0;
+  overflow: hidden;
+}
+
+.entryItems {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1;
 }
 
 .entryChip {
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 3px 8px;
   background: var(--bg-chip);
   border-left: 3px solid var(--chip-border);
   cursor: pointer;
@@ -183,10 +191,32 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  background: transparent;
+  border: none;
+  text-align: left;
+  margin-top: auto;
+  margin-bottom: -4px;
 }
 
 .moreChip:hover {
   color: #1677ff;
+}
+
+.morePopoverList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 336px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.morePopoverEmpty {
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 14px 0 8px;
 }
 
 /* Popover */
@@ -341,4 +371,52 @@
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.viewerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.viewerTitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.viewerEditor {
+  cursor: default;
+  min-height: 120px;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.viewerRichText {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  user-select: text;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.viewerRichText p {
+  margin: 0.3em 0;
+}
+
+.viewerRichText ul,
+.viewerRichText ol {
+  padding-left: 1.4em;
+  margin: 0.2em 0;
+}
+
+.viewerRichText code {
+  background: var(--bg-cell-empty);
+  border-radius: 3px;
+  padding: 0 3px;
+  font-size: 12px;
 }
