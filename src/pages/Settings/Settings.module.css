@@ -1,0 +1,91 @@
+.container {
+  padding: 32px 40px;
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-content);
+}
+
+.header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section {
+  margin-bottom: 8px;
+  max-width: 560px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--section-title);
+  margin-bottom: 4px;
+  padding: 0 2px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.row:hover {
+  background: var(--setting-row-hover);
+}
+
+.rowLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rowLabel {
+  font-size: 14px;
+  color: var(--setting-label);
+}
+
+.rowDesc {
+  font-size: 12px;
+  color: var(--setting-desc);
+  max-width: 420px;
+  word-break: break-all;
+}
+
+.rowControl {
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.aboutCard {
+  padding: 24px 20px;
+  background: var(--about-card-bg);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.appName {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--about-name);
+}
+
+.appDesc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.appVersion {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}

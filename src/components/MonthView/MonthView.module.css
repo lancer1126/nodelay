@@ -1,0 +1,344 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg-content);
+  user-select: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.navGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.monthTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-month);
+  margin-left: 8px;
+}
+
+.monthPickerTrigger {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-month);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.monthPickerTrigger:hover {
+  background: var(--bg-cell-hover);
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.weekCell {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-week);
+  padding: 6px 0;
+  font-weight: 500;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex: 1;
+  overflow: hidden;
+}
+
+.emptyCell {
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-cell-empty);
+}
+
+.dayCell {
+  border-bottom: 1px solid var(--border-color);
+  padding: 4px 4px 6px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  cursor: default;
+  background: var(--bg-cell);
+  transition: background 0.1s;
+}
+
+.dayCell:hover {
+  background: var(--bg-cell-hover);
+}
+
+.dayCell:hover .addBtn {
+  opacity: 1;
+}
+
+.todayCell {
+  background: var(--bg-cell-today);
+}
+
+.dayCellHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  min-height: 24px;
+}
+
+.dayNumber {
+  font-size: 13px;
+  color: var(--text-day-num);
+  font-weight: 400;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.todayNumber {
+  background: #1677ff;
+  color: #fff;
+  font-weight: 700;
+}
+
+.addBtn {
+  opacity: 0;
+  transition: opacity 0.15s;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--text-secondary) !important;
+}
+
+.entryList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.entryChip {
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: var(--bg-chip);
+  border-left: 3px solid var(--chip-border);
+  cursor: pointer;
+  transition: background 0.15s;
+  overflow: hidden;
+  white-space: nowrap;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.entryChip:hover {
+  background: var(--bg-chip-hover);
+}
+
+.chipTitle {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-chip);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.moreChip {
+  font-size: 11px;
+  color: var(--text-muted);
+  height: 18px;
+  line-height: 18px;
+  padding: 0 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.moreChip:hover {
+  color: #1677ff;
+}
+
+/* Popover */
+.popoverOverlay :global(.ant-popover-inner) {
+  padding: 12px;
+  width: 360px;
+}
+
+.popoverContent {
+  display: flex;
+  flex-direction: column;
+  width: 336px;
+}
+
+.popoverMetaRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.metaPickerBtn {
+  border: none !important;
+  color: var(--text-secondary) !important;
+  background: var(--bg-cell-hover) !important;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+  height: 28px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+}
+
+.metaPickerBtn:hover {
+  background: rgba(22, 119, 255, 0.12) !important;
+  color: #1677ff !important;
+}
+
+.selectedMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.selectedMetaRow :global(.ant-tag) {
+  font-size: 12px;
+  padding: 1px 6px;
+}
+
+.metaHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.metaTagsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.quickCreateRow {
+  display: flex;
+  gap: 6px;
+  padding: 0 8px 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.quickCreateInput {
+  width: 150px;
+}
+
+.quickCreateBtn {
+  border: none !important;
+  background: #1677ff !important;
+}
+
+.pickerList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 2px 2px 4px;
+}
+
+.pickerItem {
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  padding: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.pickerItem :global(.ant-tag) {
+  margin: 0;
+  opacity: 0.82;
+  font-size: 13px;
+  padding: 4px 10px;
+}
+
+.pickerItemActive {
+  background: transparent;
+}
+
+.pickerItemActive :global(.ant-tag) {
+  opacity: 1;
+  filter: brightness(0.85) saturate(1.05);
+}
+
+.pickerFooterRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popoverEditor {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 6px 8px;
+  min-height: 96px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  cursor: text;
+  background: var(--bg-content);
+}
+
+.miniEditor :global(.ProseMirror) {
+  outline: none;
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 60px;
+  color: var(--text-primary);
+}
+
+.miniEditor :global(.ProseMirror p) { margin: 0.3em 0; }
+
+.miniEditor :global(.ProseMirror ul),
+.miniEditor :global(.ProseMirror ol) {
+  padding-left: 1.4em;
+  margin: 0.2em 0;
+}
+
+.miniEditor :global(.ProseMirror code) {
+  background: var(--bg-cell-empty);
+  border-radius: 3px;
+  padding: 0 3px;
+  font-size: 12px;
+}
+
+.popoverActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

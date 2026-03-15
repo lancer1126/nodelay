@@ -1,0 +1,106 @@
+.shell {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-shell);
+}
+
+.loading {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-shell);
+}
+
+.loadingDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1677ff;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1;   transform: scale(1.2); }
+}
+
+/* ── 左侧活动栏（VSCode Activity Bar 风格） ── */
+.sidebar {
+  width: 52px;
+  min-width: 52px;
+  background: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0;
+  flex-shrink: 0;
+}
+
+/* 导航按钮组 */
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  width: 100%;
+}
+
+.navBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+/* 单个导航按钮 */
+.navBtn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-nav);
+  transition: background 0.15s, opacity 0.12s, transform 0.15s ease-out;
+  outline: none;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.navBtn:hover {
+  background: var(--bg-nav-hover);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.navBtnActive {
+  background: var(--bg-nav-active);
+  opacity: 1;
+}
+
+.navBtnActive:hover {
+  background: var(--bg-nav-active);
+  transform: scale(1.08);
+}
+
+
+/* 右侧内容区 */
+.content {
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-content);
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,110 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============ 浅色主题（默认） ============ */
+:root,
+[data-theme="light"] {
+  --bg-shell: #f0f2f5;
+  --bg-sidebar: #f3f3f3;
+  --bg-content: #ffffff;
+  --bg-cell: #ffffff;
+  --bg-cell-empty: #f9f9f9;
+  --bg-cell-hover: #f5f7fa;
+  --bg-cell-today: #eff6ff;
+  --bg-chip: #dbeafe;
+  --bg-chip-hover: #bfdbfe;
+  --bg-nav-btn: #d4d7dc;
+  --bg-nav-btn-hover: #1677ff;
+  --bg-nav-logo: #1677ff;
+  --bg-nav-hover: #e4e6ea;
+  --bg-nav-active: #dde1e8;
+
+  --border-color: #e0e0e0;
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #555;
+  --text-muted: #999;
+  --text-nav: #858585;
+  --text-nav-active: #1677ff;
+  --text-chip: #1e3a5f;
+  --text-month: #1a1a2e;
+  --text-week: #888;
+  --text-day-num: #444;
+
+  --chip-border: #1677ff;
+
+  --list-item-hover: #f5f5f5;
+  --section-title: #72767d;
+  --setting-row-hover: #f0f2f5;
+  --setting-label: #333;
+  --setting-desc: #888;
+  --about-card-bg: #f5f7fa;
+  --about-name: #1a1a2e;
+}
+
+/* ============ 深色主题 ============ */
+[data-theme="dark"] {
+  --bg-shell: #1e1e1e;
+  --bg-sidebar: #252526;
+  --bg-content: #1e1e1e;
+  --bg-cell: #313338;
+  --bg-cell-empty: #2b2d31;
+  --bg-cell-hover: #36393f;
+  --bg-cell-today: #2c3040;
+  --bg-chip: #1e3a5f;
+  --bg-chip-hover: #1d4a7a;
+  --bg-nav-btn: #313338;
+  --bg-nav-btn-hover: #1677ff;
+  --bg-nav-logo: #1677ff;
+  --bg-nav-hover: #3a3d44;
+  --bg-nav-active: #404349;
+
+  --border-color: #3a3d44;
+
+  --text-primary: #e3e5e8;
+  --text-secondary: #b9bbbe;
+  --text-muted: #72767d;
+  --text-nav: #b9bbbe;
+  --text-nav-active: #ffffff;
+  --text-chip: #c9d1d9;
+  --text-month: #e3e5e8;
+  --text-week: #72767d;
+  --text-day-num: #b9bbbe;
+
+  --chip-border: #1677ff;
+
+  --list-item-hover: #36393f;
+  --section-title: #72767d;
+  --setting-row-hover: #36393f;
+  --setting-label: #dcddde;
+  --setting-desc: #72767d;
+  --about-card-bg: #36393f;
+  --about-name: #e3e5e8;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
