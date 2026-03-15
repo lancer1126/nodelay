@@ -155,7 +155,7 @@
 
 .entryChip {
   border-radius: 4px;
-  padding: 3px 8px;
+  padding: 2px 8px;
   background: var(--bg-chip);
   border-left: 3px solid var(--chip-border);
   cursor: pointer;
